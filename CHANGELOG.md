@@ -6,6 +6,18 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-02
+
+### Fixed
+
+- **The "Dashboard" tab label is no longer cut off on phones.** Five
+  equal-width tabs left it too little room. On narrow screens the tabs now
+  size to their labels.
+- **The dashboard's top axis labels no longer overlap.** The top of the axis
+  could land between labels (e.g. 96 just above 95), drawing two numbers on
+  top of each other. It now rounds up to a whole step (0, 20, … 100), with
+  fewer, evenly spaced labels.
+
 ## [1.0.0] - 2026-11-01
 
 First public release.
@@ -28,5 +40,6 @@ First public release.
   on your device.
 - Builds for **Android** (APK) and the **web**.
 
-[Unreleased]: https://github.com/riazhassan-za/opengltracker/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/riazhassan-za/opengltracker/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/riazhassan-za/opengltracker/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/riazhassan-za/opengltracker/releases/tag/v1.0.0

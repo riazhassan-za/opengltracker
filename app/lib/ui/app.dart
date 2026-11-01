@@ -85,11 +85,19 @@ class _ShellState extends ConsumerState<_Shell> with SingleTickerProviderStateMi
 
   @override
   Widget build(BuildContext context) {
+    final narrow = MediaQuery.sizeOf(context).width < 600;
     return Scaffold(
       appBar: AppBar(
         title: const Text('OpenGLTracker'),
         bottom: TabBar(
           controller: _tabController,
+          // Five equal-width tabs truncate "Dashboard" on phones. On narrow
+          // screens size tabs to their labels instead (scrolling only if a
+          // very small screen still can't fit them).
+          isScrollable: narrow,
+          tabAlignment: narrow ? TabAlignment.center : null,
+          labelPadding:
+              narrow ? const EdgeInsets.symmetric(horizontal: 12) : null,
           tabs: const [
             Tab(text: 'Log'),
             Tab(text: 'Foods'),

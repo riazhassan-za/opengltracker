@@ -82,6 +82,22 @@ class _MetricToggle extends StatelessWidget {
   }
 }
 
+/// The smallest 1, 2 or 5 × 10ⁿ that is at least [raw].
+double _niceStep(double raw) {
+  if (raw <= 0) return 1;
+  var magnitude = 1.0;
+  while (magnitude * 10 <= raw) {
+    magnitude *= 10;
+  }
+  while (magnitude > raw) {
+    magnitude /= 10;
+  }
+  for (final m in [1, 2, 5, 10]) {
+    if (m * magnitude >= raw) return m * magnitude;
+  }
+  return 10 * magnitude;
+}
+
 class _Chart extends StatelessWidget {
   final List<DashboardPoint> points;
   final DashboardPeriod period;
@@ -113,11 +129,15 @@ class _Chart extends StatelessWidget {
       FlSpot((points.length - 1).toDouble(), baseline),
     ];
 
-    final maxY = ([
+    final rawMaxY = ([
       ...points.map((p) => p.value),
       baseline,
     ].fold(0.0, (a, b) => a > b ? a : b) * 1.2)
         .clamp(baseline * 1.2, double.infinity);
+    // Round the top up to a whole step so the last label isn't drawn on top
+    // of the one below it, and grid lines and labels share the same step.
+    final yStep = _niceStep(rawMaxY / 6);
+    final maxY = (rawMaxY / yStep).ceil() * yStep;
 
     return LineChart(
       LineChartData(
@@ -128,6 +148,7 @@ class _Chart extends StatelessWidget {
         gridData: FlGridData(
           show: true,
           drawVerticalLine: false,
+          horizontalInterval: yStep,
           getDrawingHorizontalLine: (_) => FlLine(
             color: const Color(0xFF333333),
             strokeWidth: 1,
@@ -143,6 +164,7 @@ class _Chart extends StatelessWidget {
             sideTitles: SideTitles(
               showTitles: true,
               reservedSize: 36,
+              interval: yStep,
               getTitlesWidget: (value, _) => Text(
                 value.toInt().toString(),
                 style: const TextStyle(color: Colors.white54, fontSize: 11),
