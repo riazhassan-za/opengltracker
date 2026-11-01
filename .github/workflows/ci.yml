@@ -41,7 +41,8 @@ jobs:
         # --universal fetches the Material fonts that the layout tests render
         # with; a fresh runner only gets them during an app build otherwise.
         run: |
-          flutter precache --universal
+          flutter precache --universal --force
+          ls "$FLUTTER_ROOT/bin/cache/artifacts/material_fonts" | head -5
           flutter pub get
 
       - name: Analyze
