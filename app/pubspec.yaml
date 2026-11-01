@@ -1,0 +1,54 @@
+name: opengltracker
+description: OpenGLTracker — browse foods by glycemic index/load and log daily intake.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_riverpod: ^2.6.1
+  csv: ^6.0.0
+  shared_preferences: ^2.3.3
+  uuid: ^4.5.1
+  fl_chart: ^0.69.0
+  flutter_native_splash: ^2.4.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.1
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "icons/gl_tracker_logo_new.png"
+  min_sdk_android: 21
+  web:
+    generate: true
+    image_path: "icons/gl_tracker_logo_new.png"
+    background_color: "#000000"
+    theme_color: "#065252"
+  windows:
+    generate: true
+    image_path: "icons/gl_tracker_logo_new.png"
+    icon_size: 48
+
+flutter_native_splash:
+  color: "#000000"
+  image: icons/gl_tracker_logo_new.png
+  android_12:
+    image: icons/gl_tracker_logo_new.png
+    icon_background_color: "#000000"
+  web: false
+
+flutter:
+  uses-material-design: true
+  assets:
+    - db/FoodsList.csv
+    - icons/gl_tracker_logo_new.png
