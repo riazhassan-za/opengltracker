@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-const _donationAddress = 'bc1qxq4n6x3safp6wglz76gdy93zhpfcw9af29cv3g';
+const _donationAddress = 'bc1q4jp3gvatpmmd8qh6neejay4z05qawuneqrr92t';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});

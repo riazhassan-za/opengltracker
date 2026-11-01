@@ -22,6 +22,20 @@ As a secondary feature, the app also adds up **calories** per meal and per day. 
 - **Dashboard:** charts of daily total GL, highest single-meal GL, and calories over time. Tap a day to open its log.
 - **Offline and private:** the food database is bundled with the app, and your log is stored only on your device.
 
+### Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/log.png" width="250" alt="Daily log with GL and calorie totals per meal and for the day">
+  <img src="docs/screenshots/food-detail.png" width="250" alt="Watermelon: high GI (72) but low GL (4) per serving">
+  <img src="docs/screenshots/dashboard.png" width="250" alt="Dashboard charting daily total GL over the week">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/foods-desktop.png" width="760" alt="Food browser on a wide screen with the detail panel alongside">
+</p>
+
+Screenshots are generated from the real app with `flutter test screenshots/readme_screenshots_test.dart` (run from `app/`).
+
 ### GL classification used in the app
 
 | Per serving | Per day     | Class  |
@@ -66,7 +80,7 @@ donations to help fund ad-free/subs-free software for great justice.
 
 Send Bitcoin:
 
-[`bc1qxq4n6x3safp6wglz76gdy93zhpfcw9af29cv3g`](bitcoin:bc1qxq4n6x3safp6wglz76gdy93zhpfcw9af29cv3g)
+[`bc1q4jp3gvatpmmd8qh6neejay4z05qawuneqrr92t`](bitcoin:bc1q4jp3gvatpmmd8qh6neejay4z05qawuneqrr92t)
 
 There is no paid tier, no ads, no telemetry and nothing withheld. The app makes
 no network connections, and your food log never leaves your device.
