@@ -4,6 +4,10 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// Release signing key, provided by CI from repository secrets. Local and fork
+// builds don't have it and fall back to the debug key.
+val releaseKeystore: String? = System.getenv("ANDROID_KEYSTORE_PATH")
+
 android {
     namespace = "com.opengltracker.app"
     compileSdk = flutter.compileSdkVersion
@@ -25,11 +29,23 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        if (releaseKeystore != null) {
+            create("release") {
+                storeFile = file(releaseKeystore)
+                storeType = "pkcs12"
+                storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                keyAlias = "upload"
+                keyPassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName(
+                if (releaseKeystore != null) "release" else "debug"
+            )
         }
     }
 }

@@ -1,5 +1,6 @@
 # OpenGLTracker
 
+[![CI](https://github.com/riazhassan-za/opengltracker/actions/workflows/ci.yml/badge.svg)](https://github.com/riazhassan-za/opengltracker/actions/workflows/ci.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
 Track the **glycemic load** of what you eat, per meal and per day.
@@ -31,7 +32,16 @@ As a secondary feature, the app also adds up **calories** per meal and per day. 
 
 The per-serving bands are the commonly used ones [[1]](#sources)[[2]](#sources).
 
-## Getting started
+## Download
+
+Get the latest build from the [releases page](https://github.com/riazhassan-za/opengltracker/releases/latest):
+
+- **Android:** `OpenGLTracker-android.apk`. Allow installs from unknown sources, then open the file.
+- **Web:** `OpenGLTracker-web.zip` is a static site. Unzip it and serve the folder from any web server.
+
+Each release includes a `SHA256SUMS.txt` for checking your download.
+
+## Building from source
 
 OpenGLTracker is a [Flutter](https://flutter.dev) app that runs on the web and on Android from a single codebase.
 
