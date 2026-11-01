@@ -25,15 +25,11 @@ Future<void> _pumpApp(WidgetTester t, Size size) async {
 }
 
 // Real fonts: the default test font draws every glyph as a 14px square, which
-// would make text widths (and therefore truncation) meaningless.
+// would make text widths (and therefore truncation) meaningless. Roboto is
+// vendored in test/fonts because Flutter's own cache no longer ships it.
 Future<void> _loadFonts() async {
-  final dir =
-      '${Platform.environment['FLUTTER_ROOT']}/bin/cache/artifacts/material_fonts';
-  if (!File('$dir/roboto-regular.ttf').existsSync()) {
-    fail('Material fonts not found in $dir. Run `flutter precache --universal`.');
-  }
   Future<ByteData> read(String f) async =>
-      ByteData.sublistView(File('$dir/$f').readAsBytesSync());
+      ByteData.sublistView(File('test/fonts/$f').readAsBytesSync());
   await (FontLoader('Roboto')
         ..addFont(read('roboto-regular.ttf'))
         ..addFont(read('roboto-medium.ttf'))

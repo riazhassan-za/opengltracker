@@ -27,10 +27,13 @@ Future<void> _loadFonts() async {
       '${Platform.environment['FLUTTER_ROOT']}/bin/cache/artifacts/material_fonts';
   Future<ByteData> read(String f) async =>
       ByteData.sublistView(File('$fonts/$f').readAsBytesSync());
+  // Roboto is vendored (Flutter's cache no longer ships it); icons aren't.
+  Future<ByteData> vendored(String f) async =>
+      ByteData.sublistView(File('test/fonts/$f').readAsBytesSync());
   final roboto = FontLoader('Roboto')
-    ..addFont(read('roboto-regular.ttf'))
-    ..addFont(read('roboto-medium.ttf'))
-    ..addFont(read('roboto-bold.ttf'));
+    ..addFont(vendored('roboto-regular.ttf'))
+    ..addFont(vendored('roboto-medium.ttf'))
+    ..addFont(vendored('roboto-bold.ttf'));
   final icons = FontLoader('MaterialIcons')
     ..addFont(read('materialicons-regular.otf'));
   await roboto.load();
