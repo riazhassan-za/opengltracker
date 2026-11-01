@@ -29,6 +29,9 @@ Future<void> _pumpApp(WidgetTester t, Size size) async {
 Future<void> _loadFonts() async {
   final dir =
       '${Platform.environment['FLUTTER_ROOT']}/bin/cache/artifacts/material_fonts';
+  if (!File('$dir/roboto-regular.ttf').existsSync()) {
+    fail('Material fonts not found in $dir. Run `flutter precache --universal`.');
+  }
   Future<ByteData> read(String f) async =>
       ByteData.sublistView(File('$dir/$f').readAsBytesSync());
   await (FontLoader('Roboto')

@@ -38,7 +38,11 @@ jobs:
           cache: true
 
       - name: Install dependencies
-        run: flutter pub get
+        # --universal fetches the Material fonts that the layout tests render
+        # with; a fresh runner only gets them during an app build otherwise.
+        run: |
+          flutter precache --universal
+          flutter pub get
 
       - name: Analyze
         run: flutter analyze
