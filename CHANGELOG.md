@@ -6,6 +6,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-02
+
 ### Fixed
 
 - **The "Dashboard" tab label is no longer cut off on phones.** Five
@@ -38,5 +40,6 @@ First public release.
   on your device.
 - Builds for **Android** (APK) and the **web**.
 
-[Unreleased]: https://github.com/riazhassan-za/opengltracker/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/riazhassan-za/opengltracker/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/riazhassan-za/opengltracker/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/riazhassan-za/opengltracker/releases/tag/v1.0.0
