@@ -178,17 +178,22 @@ Future<void> _openTab(WidgetTester t, String label) async {
   await _settle(t);
 }
 
-Future<void> _searchAndOpen(WidgetTester t, String query, String food) async {
-  await t.enterText(find.byType(TextField).first, query);
-  // A focused field's blinking cursor never lets pumpAndSettle finish.
-  FocusManager.instance.primaryFocus?.unfocus();
-  await _settle(t);
-  // The food db loads off the fake test clock; give it real time.
+// The food db loads off the fake test clock; give it real time until the
+// list has rows.
+Future<void> _waitForFoods(WidgetTester t) async {
   for (var i = 0; i < 80 && find.byType(FoodListTile).evaluate().isEmpty; i++) {
     await t.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 250)));
     await t.pump(const Duration(milliseconds: 100));
   }
   await _settle(t);
+}
+
+Future<void> _searchAndOpen(WidgetTester t, String query, String food) async {
+  await t.enterText(find.byType(TextField).first, query);
+  // A focused field's blinking cursor never lets pumpAndSettle finish.
+  FocusManager.instance.primaryFocus?.unfocus();
+  await _settle(t);
+  await _waitForFoods(t);
   // Scroll the vertical food list (not the tab view's horizontal pager)
   // until the food is built, then bring it fully on screen.
   final list = find.byWidgetPredicate(
@@ -228,6 +233,7 @@ void main() {
   testWidgets('add your own food (phone)', (t) async {
     await _launch(t, phone);
     await _openTab(t, 'Foods');
+    await _waitForFoods(t); // so the list shows behind the form
     await t.tap(find.text('Add your own'));
     await _settle(t);
     Future<void> fill(String label, String text) =>
