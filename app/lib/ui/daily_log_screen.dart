@@ -191,20 +191,28 @@ class _LogHeader extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(16, 4, 8, 4),
             child: Row(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Total GL: ${log.totalGl.toStringAsFixed(1)}',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                // On narrow phones a three-digit total doesn't fit beside the
+                // badge and Add Food button; shrink it rather than overflow.
+                Flexible(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Total GL: ${log.totalGl.toStringAsFixed(1)}',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        Text(
+                          '${log.totalCalories} kcal',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6)),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '${log.totalCalories} kcal',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6)),
-                    ),
-                  ],
+                  ),
                 ),
                 const SizedBox(width: 12),
                 GlBadge(gl: log.totalGl, glClass: log.glClass, large: true),
