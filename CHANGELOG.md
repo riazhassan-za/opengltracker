@@ -6,6 +6,24 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-02
+
+### Added
+
+- **Add your own foods.** On the Foods tab, tap "Add your own" to add a food
+  that isn't in the database. Enter its GI and either its carbs per serving
+  (the app works out the GL as GI × carbs ÷ 100) or its GL directly. Your
+  foods are marked "My food", appear in the food list and when adding to your
+  log, and can be edited or deleted. They're stored only on your device.
+  Editing or deleting a food doesn't change entries already in your log.
+
+### Fixed
+
+- **The Log tab's total no longer overflows on narrow phones.** On a 360 px
+  wide screen the day's total GL, its badge and the Add Food button didn't
+  fit, by up to about 50 px with a three-digit total. The total now shrinks
+  to fit.
+
 ## [1.0.1] - 2026-11-02
 
 ### Fixed
@@ -40,6 +58,7 @@ First public release.
   on your device.
 - Builds for **Android** (APK) and the **web**.
 
-[Unreleased]: https://github.com/riazhassan-za/opengltracker/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/riazhassan-za/opengltracker/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/riazhassan-za/opengltracker/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/riazhassan-za/opengltracker/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/riazhassan-za/opengltracker/releases/tag/v1.0.0

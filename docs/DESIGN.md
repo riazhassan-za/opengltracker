@@ -29,7 +29,7 @@ Flutter is the chosen framework. One Dart codebase compiles natively to:
 
 | Purpose              | Package                        |
 |----------------------|--------------------------------|
-| Local persistence    | `shared_preferences` (daily logs only) |
+| Local persistence    | `shared_preferences` (daily logs and the user's own foods) |
 | CSV parsing          | `csv`                          |
 | State management     | `riverpod` (or `provider`)     |
 
@@ -40,6 +40,21 @@ Flutter is the chosen framework. One Dart codebase compiles natively to:
 The food database is `app/db/FoodsList.csv`, committed to this repo and bundled into the app as a Flutter asset. It is the single source of truth — the app never looks food data up online.
 
 Updating the food list means editing the CSV and shipping a new release.
+
+### User-added foods
+
+Users can add foods of their own, which are stored on the device in
+`shared_preferences` under `user_foods` (a JSON list), next to their log. They
+are never written to the CSV, so an app update can't overwrite them. The food
+list shown everywhere is the user's foods followed by the bundled ones; user
+foods are marked "My food" and are the only ones that can be edited or
+deleted.
+
+A user food is entered with its GI plus either its carbohydrate per serving or
+its GL. Given carbs, GL is calculated as `GI × carbs ÷ 100` (one decimal
+place) and the carbs are kept so the food can be edited the same way. Log
+entries copy a food's GL and calories when logged, so editing or deleting a
+food never changes past logs.
 
 ---
 
@@ -53,6 +68,8 @@ class FoodItem {
   final int gi;            // "Glycemic Index (GI)" column
   final double gl;         // "Glycemic Load (GL)" column
   final String serving;    // "Typical Serving Size / Notes" column
+  final double? carbs;     // user foods entered by carbs only
+  final bool custom;       // true for user-added foods
 }
 ```
 
@@ -73,9 +90,10 @@ App launch
   └─ load bundled asset db/FoodsList.csv (rootBundle)
        ├─ SUCCESS → parse, hold in memory, display
        └─ FAIL    → show error with retry button (reloads the asset)
+  └─ load user foods from shared_preferences, list them first
 ```
 
-There is no caching layer, no network lookup, and no refresh timer. The asset is parsed once per app start and kept in memory for the session.
+There is no caching layer, no network lookup, and no refresh timer. The asset is parsed once per app start and kept in memory for the session; adding, editing or deleting a user food doesn't re-parse it.
 
 ---
 
@@ -239,14 +257,16 @@ gl_tracker/
     │   │   ├── consumption_entry.dart  ← consumption + daily log models
     │   │   ├── csv_parser.dart         ← parse raw CSV → List<FoodItem>
     │   │   ├── food_repository.dart    ← load bundled CSV asset
+    │   │   ├── user_food_repository.dart ← read/write the user's own foods
     │   │   └── log_repository.dart     ← read/write daily logs to storage
     │   ├── providers/
-    │   │   ├── food_provider.dart      ← Riverpod: food list + search/sort/filter
+    │   │   ├── food_provider.dart      ← Riverpod: bundled + user foods, search/sort/filter
     │   │   └── log_provider.dart       ← Riverpod: today's log + total GL
     │   └── ui/
     │       ├── app.dart                ← MaterialApp, routing, bottom nav
     │       ├── food_list_screen.dart
     │       ├── food_detail_panel.dart
+    │       ├── user_food_form.dart     ← add/edit your own food
     │       ├── daily_log_screen.dart
     │       ├── add_food_sheet.dart     ← search + portions entry
     │       └── widgets/

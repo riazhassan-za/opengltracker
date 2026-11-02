@@ -53,6 +53,29 @@ void main() {
     });
   }
 
+  // The tab test above checks before the log has loaded; this one waits for
+  // the header (date, total GL, Add Food) to render. Any overflow fails it.
+  for (final gl in [0.0, 123.4]) {
+    testWidgets('log header fits at 360px with total GL $gl', (t) async {
+      SharedPreferences.setMockInitialValues({
+        _todayKey(): jsonEncode([
+          {
+            'id': 'a',
+            'foodName': 'Test',
+            'foodGl': gl,
+            'foodCalories': 1234,
+            'foodServing': '1',
+            'portions': 1.0,
+            'category': 'lunch',
+          }
+        ]),
+      });
+      await _pumpApp(t, const Size(360, 740));
+      await t.pumpAndSettle();
+      expect(find.textContaining('Total GL:'), findsOneWidget);
+    });
+  }
+
   testWidgets('dashboard y-axis ends on a whole step', (t) async {
     // One day at GL 64: the axis top would be 80 * 1.2 = 96, which used to be
     // drawn as an extra "96" label on top of "95".

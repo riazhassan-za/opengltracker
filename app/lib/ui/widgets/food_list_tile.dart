@@ -34,7 +34,7 @@ class FoodListTile extends StatelessWidget {
           : null,
       title: Text(food.name),
       subtitle: Text(
-        'GI ${food.gi}',
+        food.custom ? 'GI ${food.gi} · My food' : 'GI ${food.gi}',
         style: Theme.of(context).textTheme.bodySmall,
       ),
       trailing: GlBadge(gl: food.gl, glClass: food.glClass),

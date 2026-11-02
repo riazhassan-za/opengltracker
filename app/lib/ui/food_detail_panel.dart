@@ -5,7 +5,12 @@ import 'widgets/gl_badge.dart';
 class FoodDetailPanel extends StatelessWidget {
   final FoodItem food;
 
-  const FoodDetailPanel({super.key, required this.food});
+  /// Shown only for the user's own foods; the bundled ones are read-only.
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
+
+  const FoodDetailPanel(
+      {super.key, required this.food, this.onEdit, this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +33,27 @@ class FoodDetailPanel extends StatelessWidget {
             _Row('Glycemic Load (GL)', food.gl.toStringAsFixed(1)),
             const SizedBox(height: 8),
             _Row('Serving Size', food.serving),
+            if (food.carbs != null) ...[
+              const SizedBox(height: 8),
+              _Row('Carbohydrate', '${food.carbs} g'),
+            ],
+            if (food.custom) ...[
+              const SizedBox(height: 20),
+              Row(children: [
+                Text('My food', style: textTheme.labelMedium),
+                const Spacer(),
+                TextButton.icon(
+                  onPressed: onEdit,
+                  icon: const Icon(Icons.edit_outlined),
+                  label: const Text('Edit'),
+                ),
+                TextButton.icon(
+                  onPressed: onDelete,
+                  icon: const Icon(Icons.delete_outline),
+                  label: const Text('Delete'),
+                ),
+              ]),
+            ],
           ],
         ),
       ),

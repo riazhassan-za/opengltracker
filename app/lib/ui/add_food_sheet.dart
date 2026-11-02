@@ -120,7 +120,10 @@ class _AddFoodSheetState extends ConsumerState<AddFoodSheet> {
                             color: Theme.of(context).colorScheme.primary)
                         : const SizedBox(width: 16),
                     title: Text(food.name),
-                    subtitle: Text('${food.calories} kcal',
+                    subtitle: Text(
+                        food.custom
+                            ? '${food.calories} kcal · My food'
+                            : '${food.calories} kcal',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5))),
                     trailing:

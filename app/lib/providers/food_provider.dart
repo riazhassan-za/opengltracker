@@ -1,24 +1,59 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/food_item.dart';
 import '../data/food_repository.dart';
+import '../data/user_food_repository.dart';
 
 final foodRepositoryProvider = Provider((_) => FoodRepository());
+final userFoodRepositoryProvider = Provider((_) => UserFoodRepository());
 
 final foodSearchQueryProvider = StateProvider<String>((_) => '');
 final foodSortProvider = StateProvider<FoodSort>((_) => FoodSort.glAsc);
 final foodFilterProvider = StateProvider<GlClass?>((_) => null);
 
+// Parsed once; adding a food of your own doesn't re-parse the bundled CSV.
+final _bundledFoodsProvider = FutureProvider<List<FoodItem>>(
+    (ref) => ref.read(foodRepositoryProvider).loadFoods());
+
+final userFoodsProvider =
+    AsyncNotifierProvider<UserFoodsNotifier, List<FoodItem>>(
+        UserFoodsNotifier.new);
+
+class UserFoodsNotifier extends AsyncNotifier<List<FoodItem>> {
+  @override
+  Future<List<FoodItem>> build() => ref.read(userFoodRepositoryProvider).load();
+
+  /// Adds [food], or replaces [replacing] with it when editing.
+  Future<void> save(FoodItem food, {FoodItem? replacing}) async {
+    final current = await future;
+    await _store([...current.where((f) => f != replacing), food]);
+  }
+
+  Future<void> delete(FoodItem food) async {
+    final current = await future;
+    await _store(current.where((f) => f != food).toList());
+  }
+
+  Future<void> _store(List<FoodItem> foods) async {
+    state = AsyncData(foods);
+    await ref.read(userFoodRepositoryProvider).save(foods);
+  }
+}
+
+/// The bundled database plus the user's own foods.
 final foodProvider =
     AsyncNotifierProvider<FoodListNotifier, List<FoodItem>>(FoodListNotifier.new);
 
 class FoodListNotifier extends AsyncNotifier<List<FoodItem>> {
   @override
-  Future<List<FoodItem>> build() =>
-      ref.read(foodRepositoryProvider).loadFoods();
+  Future<List<FoodItem>> build() async {
+    final bundled = await ref.watch(_bundledFoodsProvider.future);
+    final mine = await ref.watch(userFoodsProvider.future);
+    return [...mine, ...bundled];
+  }
 
   Future<void> reload() async {
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(ref.read(foodRepositoryProvider).loadFoods);
+    ref.invalidate(_bundledFoodsProvider);
+    ref.invalidate(userFoodsProvider);
   }
 }
 

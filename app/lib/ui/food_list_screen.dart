@@ -3,9 +3,51 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/food_item.dart';
 import '../providers/food_provider.dart';
 import 'food_detail_panel.dart';
+import 'user_food_form.dart';
 import 'widgets/food_list_tile.dart';
 
 final _selectedFoodProvider = StateProvider<FoodItem?>((_) => null);
+
+Future<void> _addFood(BuildContext context, WidgetRef ref) async {
+  final food = await showUserFoodForm(context);
+  if (food == null || !context.mounted) return;
+  ref.read(_selectedFoodProvider.notifier).state = food;
+  ScaffoldMessenger.of(context)
+      .showSnackBar(SnackBar(content: Text('Added ${food.name}')));
+}
+
+Future<void> _editFood(BuildContext context, WidgetRef ref, FoodItem food) async {
+  final saved = await showUserFoodForm(context, editing: food);
+  if (saved != null) ref.read(_selectedFoodProvider.notifier).state = saved;
+}
+
+/// Returns true if the food was deleted.
+Future<bool> _deleteFood(
+    BuildContext context, WidgetRef ref, FoodItem food) async {
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: Text('Delete ${food.name}?'),
+      content: const Text('Entries already in your log are kept.'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(dialogContext, false),
+          child: const Text('Cancel'),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(dialogContext, true),
+          child: const Text('Delete'),
+        ),
+      ],
+    ),
+  );
+  if (confirmed != true) return false;
+  await ref.read(userFoodsProvider.notifier).delete(food);
+  if (ref.read(_selectedFoodProvider) == food) {
+    ref.read(_selectedFoodProvider.notifier).state = null;
+  }
+  return true;
+}
 
 class FoodListScreen extends ConsumerWidget {
   const FoodListScreen({super.key});
@@ -33,7 +75,13 @@ class _WideDetailPanel extends ConsumerWidget {
     if (food == null) {
       return const Center(child: Text('Select a food to see details'));
     }
-    return SingleChildScrollView(child: FoodDetailPanel(food: food));
+    return SingleChildScrollView(
+      child: FoodDetailPanel(
+        food: food,
+        onEdit: () => _editFood(context, ref, food),
+        onDelete: () => _deleteFood(context, ref, food),
+      ),
+    );
   }
 }
 
@@ -86,7 +134,20 @@ class _FoodListState extends ConsumerState<_FoodList> {
                                 context: context,
                                 showDragHandle: true,
                                 useSafeArea: true,
-                                builder: (_) => FoodDetailPanel(food: food),
+                                builder: (sheetContext) => FoodDetailPanel(
+                                  food: food,
+                                  onEdit: () {
+                                    Navigator.pop(sheetContext);
+                                    _editFood(context, ref, food);
+                                  },
+                                  onDelete: () async {
+                                    if (await _deleteFood(
+                                            context, ref, food) &&
+                                        sheetContext.mounted) {
+                                      Navigator.pop(sheetContext);
+                                    }
+                                  },
+                                ),
                               );
                             }
                           },
@@ -186,6 +247,11 @@ class _SearchAndControls extends ConsumerWidget {
                   ],
                 ),
               ]),
+              TextButton.icon(
+                onPressed: () => _addFood(context, ref),
+                icon: const Icon(Icons.add),
+                label: const Text('Add your own'),
+              ),
             ],
           ),
         ],
