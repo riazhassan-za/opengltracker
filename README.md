@@ -18,9 +18,10 @@ As a secondary feature, the app also adds up **calories** per meal and per day. 
 ## Features
 
 - **Food browser:** search more than 5,000 foods, sort by GL, GI or name, and filter by GL tier. Each food shows its GI, GL, calories and typical serving.
+- **Your own foods:** add foods that aren't in the database. Enter the GI and either the carbs per serving (the app works out the GL) or the GL itself. Your foods show up alongside the rest, and you can edit or delete them.
 - **Daily log:** add foods with a portion count, grouped by meal (breakfast, lunch, dinner, snacks). GL and calorie totals are shown per meal and per day. Drag entries between meals (long-press on mobile).
 - **Dashboard:** charts of daily total GL, highest single-meal GL, and calories over time. Tap a day to open its log.
-- **Offline and private:** the food database is bundled with the app, and your log is stored only on your device.
+- **Offline and private:** the food database is bundled with the app, and your log and your own foods are stored only on your device.
 
 ### Screenshots
 
