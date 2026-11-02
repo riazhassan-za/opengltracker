@@ -225,6 +225,23 @@ void main() {
     t.view.reset();
   });
 
+  testWidgets('add your own food (phone)', (t) async {
+    await _launch(t, phone);
+    await _openTab(t, 'Foods');
+    await t.tap(find.text('Add your own'));
+    await _settle(t);
+    Future<void> fill(String label, String text) =>
+        t.enterText(find.widgetWithText(TextFormField, label), text);
+    await fill('Name', 'Banana bread (homemade)');
+    await fill('Serving size', '1 slice / 60g');
+    await fill('Glycemic index (GI)', '51');
+    await fill('Carbohydrate per serving (g)', '30');
+    await fill('Calories per serving', '190');
+    FocusManager.instance.primaryFocus?.unfocus(); // no blinking cursor
+    await _shot(t, 'add-food', 2.5);
+    t.view.reset();
+  });
+
   testWidgets('dashboard (phone)', (t) async {
     await _launch(t, phone);
     await _openTab(t, 'Dashboard');

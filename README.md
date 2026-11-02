@@ -26,9 +26,10 @@ As a secondary feature, the app also adds up **calories** per meal and per day. 
 ### Screenshots
 
 <p align="center">
-  <img src="docs/screenshots/log.png" width="250" alt="Daily log with GL and calorie totals per meal and for the day">
-  <img src="docs/screenshots/food-detail.png" width="250" alt="Watermelon: high GI (72) but low GL (4) per serving">
-  <img src="docs/screenshots/dashboard.png" width="250" alt="Dashboard charting daily total GL over the week">
+  <img src="docs/screenshots/log.png" width="190" alt="Daily log with GL and calorie totals per meal and for the day">
+  <img src="docs/screenshots/food-detail.png" width="190" alt="Watermelon: high GI (72) but low GL (4) per serving">
+  <img src="docs/screenshots/add-food.png" width="190" alt="Adding your own food: GI 51 and 30 g of carbs give a GL of 15.3">
+  <img src="docs/screenshots/dashboard.png" width="190" alt="Dashboard charting daily total GL over the week">
 </p>
 
 <p align="center">
