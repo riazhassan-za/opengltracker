@@ -6,6 +6,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-02
+
 ### Added
 
 - **Add your own foods.** On the Foods tab, tap "Add your own" to add a food
@@ -56,6 +58,7 @@ First public release.
   on your device.
 - Builds for **Android** (APK) and the **web**.
 
-[Unreleased]: https://github.com/riazhassan-za/opengltracker/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/riazhassan-za/opengltracker/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/riazhassan-za/opengltracker/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/riazhassan-za/opengltracker/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/riazhassan-za/opengltracker/releases/tag/v1.0.0
